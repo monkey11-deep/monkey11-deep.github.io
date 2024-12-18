@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>會飛的狗遊戲</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #gameArea {
+            width: 600px;
+            height: 400px;
+            background-color: #87CEEB; /* 藍色天空 */
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #333;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #dog {
+            width: 50px;
+            height: 50px;
+            background-image: url('https://img.icons8.com/ios/452/dog.png'); /* 狗圖示 */
+            background-size: cover;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="gameArea">
+        <div id="dog"></div>
+    </div>
+
+    <script>
+        // 初始設置
+        let dog = document.getElementById('dog');
+        let gameArea = document.getElementById('gameArea');
+        let dogSpeed = 5;  // 狗的飛行速度
+        let dogX = 275;    // 狗的初始X座標（畫面中央）
+        let dogY = 175;    // 狗的初始Y座標（畫面中央）
+        let dx = 0;        // 水平移動方向
+        let dy = 0;        // 垂直移動方向
+
+        // 將狗放到畫面中央
+        dog.style.left = dogX + 'px';
+        dog.style.top = dogY + 'px';
+
+        // 控制狗的飛行方向
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowUp') {
+                dy = -dogSpeed;  // 向上移動
+            }
+            if (event.key === 'ArrowDown') {
+                dy = dogSpeed;  // 向下移動
+            }
+            if (event.key === 'ArrowLeft') {
+                dx = -dogSpeed;  // 向左移動
+            }
+            if (event.key === 'ArrowRight') {
+                dx = dogSpeed;  // 向右移動
+            }
+        });
+
+        // 移動狗，碰到邊界回到中央
+        function moveDog() {
+            // 更新狗的位置
+            dogX += dx;
+            dogY += dy;
+
+            // 取得遊戲區域的邊界位置
+            let dogPosition = dog.getBoundingClientRect();
+            let gameAreaPosition = gameArea.getBoundingClientRect();
+
+            // 偵測狗是否碰到邊界
+            if (dogPosition.left <= gameAreaPosition.left || 
+                dogPosition.right >= gameAreaPosition.right || 
+                dogPosition.top <= gameAreaPosition.top || 
+                dogPosition.bottom >= gameAreaPosition.bottom) {
+                // 若碰到邊界，狗回到中央
+                dogX = 275;
+                dogY = 175;
+            }
+
+            // 更新狗的位置
+            dog.style.left = dogX + 'px';
+            dog.style.top = dogY + 'px';
+
+            // 每隔16ms刷新畫面
+            requestAnimationFrame(moveDog);
+        }
+
+        // 啟動狗的自動移動
+        moveDog();
+    </script>
+
+</body>
+</html>
