@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全民所得計算器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding-top: 50px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="number"], input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: block;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .result h3 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>全民所得計算器</h1>
+
+    <!-- 表单容器 -->
+    <div class="form-container">
+        <div class="input-group">
+            <label for="numPeople">请输入参与计算的人数：</label>
+            <input type="number" id="numPeople" placeholder="例如: 5" min="1">
+        </div>
+        <div class="input-group">
+            <label for="income">请输入每人的收入（单位: 元）：</label>
+            <input type="number" id="income" placeholder="每个人的收入，例如: 50000" min="0">
+        </div>
+        <button onclick="calculateIncome()">计算全民所得</button>
+    </div>
+
+    <!-- 计算结果显示 -->
+    <div id="resultContainer" class="result" style="display: none;">
+        <h3>計算結果：</h3>
+        <p id="totalIncome">全民總所得：0 元</p>
+        <p id="avgIncome">每人平均收入：0 元</p>
+    </div>
+</div>
+
+<script>
+    function calculateIncome() {
+        // 获取用户输入的数量和收入
+        let numPeople = parseInt(document.getElementById("numPeople").value);
+        let income = parseFloat(document.getElementById("income").value);
+
+        // 如果用户没有输入有效的数字，显示警告
+        if (isNaN(numPeople) || isNaN(income) || numPeople <= 0 || income < 0) {
+            alert("请输入有效的数量和收入！");
+            return;
+        }
+
+        // 计算总收入和每人平均收入
+        let totalIncome = numPeople * income;
+        let avgIncome = totalIncome / numPeople;
+
+        // 显示结果
+        document.getElementById("totalIncome").textContent = "全民總所得：" + totalIncome + " 元";
+        document.getElementById("avgIncome").textContent = "每人平均收入：" + avgIncome.toFixed(2) + " 元";
+
+        // 显示结果容器
+        document.getElementById("resultContainer").style.display = "block";
+    }
+</script>
+
+</body>
+</html>
