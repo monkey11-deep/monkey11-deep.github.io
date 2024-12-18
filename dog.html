@@ -15,3 +15,103 @@
     <script src="game.js"></script>
 </body>
 </html>
+2. CSS 部分
+css
+複製程式碼
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f8ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#gameArea {
+    width: 600px;
+    height: 400px;
+    background-color: #87CEEB;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid #333;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#dog {
+    width: 50px;
+    height: 50px;
+    background-color: brown;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 20px;
+    left: 100px;
+}
+3. JavaScript 部分
+javascript
+複製程式碼
+// 初始設置
+let dog = document.getElementById('dog');
+let gameArea = document.getElementById('gameArea');
+let dogSpeed = 5;  // 狗的飛行速度
+let dogX = 100;    // 狗的初始X座標
+let dogY = 20;     // 狗的初始Y座標
+
+// 設置狗的初始位置
+dog.style.left = dogX + 'px';
+dog.style.top = dogY + 'px';
+
+// 控制狗的飛行
+document.addEventListener('keydown', (event) => {
+    let dogPosition = dog.getBoundingClientRect();
+    let gameAreaPosition = gameArea.getBoundingClientRect();
+
+    // 根據按鍵控制狗的移動
+    if (event.key === 'ArrowUp' && dogPosition.top > gameAreaPosition.top) {
+        dogY -= dogSpeed;  // 向上移動
+    }
+    if (event.key === 'ArrowDown' && dogPosition.bottom < gameAreaPosition.bottom) {
+        dogY += dogSpeed;  // 向下移動
+    }
+    if (event.key === 'ArrowLeft' && dogPosition.left > gameAreaPosition.left) {
+        dogX -= dogSpeed;  // 向左移動
+    }
+    if (event.key === 'ArrowRight' && dogPosition.right < gameAreaPosition.right) {
+        dogX += dogSpeed;  // 向右移動
+    }
+
+    // 更新狗的位置
+    dog.style.left = dogX + 'px';
+    dog.style.top = dogY + 'px';
+});
+
+// 讓狗在畫面內移動並反彈
+function moveDog() {
+    let dogPosition = dog.getBoundingClientRect();
+    let gameAreaPosition = gameArea.getBoundingClientRect();
+
+    // 當狗碰到邊界時反彈
+    if (dogPosition.left <= gameAreaPosition.left || dogPosition.right >= gameAreaPosition.right) {
+        dogSpeed = -dogSpeed;  // 反向移動
+    }
+    if (dogPosition.top <= gameAreaPosition.top || dogPosition.bottom >= gameAreaPosition.bottom) {
+        dogSpeed = -dogSpeed;  // 反向移動
+    }
+
+    // 每隔10毫秒自動移動，保持狗在畫面內隨機移動
+    dogX += dogSpeed;
+    dogY += dogSpeed;
+
+    dog.style.left = dogX + 'px';
+    dog.style.top = dogY + 'px';
+
+    requestAnimationFrame(moveDog);
+}
+
+// 啟動自動移動
+moveDog();
